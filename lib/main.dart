@@ -32,7 +32,7 @@ class MyHomePage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         leading: Icon(Icons.menu),
-        title: Text('Listing Articles'),
+        title: Text('Bookmark List'),
         actions: [IconButton(icon: Icon(Icons.search), onPressed: () {})],
       ),
       body: articles.when(
@@ -47,45 +47,118 @@ class MyHomePage extends ConsumerWidget {
               child: ListView.builder(
                   itemCount: value.length,
                   itemBuilder: (context, index) {
-                    var title = "title: " + value[index].title;
+                    var title = "タイトル: " + value[index].title;
                     return Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ListTile(
-                            title: Row(
-                              children: [
-                                // CircleAvatar(
-                                //   backgroundImage:
-                                //       NetworkImage(value[index].picture.large),
-                                //   radius: 24.0,
-                                // ),
-                                SizedBox(width: 20.0),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        title.toString(),
-                                        style: TextStyle(fontSize: 17.0),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      SizedBox(height: 10.0),
-                                      Text(
-                                        "content: " +
-                                            value[index].content.toString(),
-                                        style: TextStyle(
-                                            fontSize: 16.0, color: Colors.grey),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ],
+                        Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                              title: Row(
+                                children: [
+                                  // CircleAvatar(
+                                  //   backgroundImage:
+                                  //       NetworkImage(value[index].picture.large),
+                                  //   radius: 24.0,
+                                  // ),
+                                  SizedBox(width: 20.0),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          title.toString(),
+                                          style: TextStyle(fontSize: 17.0),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        SizedBox(height: 10.0),
+                                        Text(
+                                          "リンク: " +
+                                              value[index].content.toString(),
+                                          style: TextStyle(
+                                              fontSize: 16.0,
+                                              color: Colors.grey),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                              trailing: IconButton(
+                                icon: Icon(Icons.more_vert),
+                                onPressed: () => showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                    title: Row(
+                                      children: [
+                                        SizedBox(width: 20.0),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                title.toString(),
+                                                style:
+                                                    TextStyle(fontSize: 17.0),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              SizedBox(height: 10.0),
+                                              Text(
+                                                "リンク: " +
+                                                    value[index]
+                                                        .content
+                                                        .toString(),
+                                                style: TextStyle(
+                                                    fontSize: 16.0,
+                                                    color: Colors.grey),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              Text(
+                                                "カテゴリー: " +
+                                                    value[index]
+                                                        .author
+                                                        .name
+                                                        .toString(),
+                                                style: TextStyle(
+                                                    fontSize: 16.0,
+                                                    color: Colors.grey),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              Text(
+                                                "作成日: " +
+                                                    value[index]
+                                                        .createdAt
+                                                        .toString(),
+                                                style: TextStyle(
+                                                    fontSize: 16.0,
+                                                    color: Colors.grey),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              Text(
+                                                "更新日: " +
+                                                    value[index]
+                                                        .updatedAt
+                                                        .toString(),
+                                                style: TextStyle(
+                                                    fontSize: 16.0,
+                                                    color: Colors.grey),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                )
-                              ],
+                                ),
+                              ),
                             ),
                           ),
-                        )
+                        ),
                       ],
                     );
                   }),
