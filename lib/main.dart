@@ -3,6 +3,7 @@ import 'package:flutter_bookmark_app/state_manager.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'input.dart';
 import 'model/article.dart';
 
 void main() {
@@ -164,6 +165,18 @@ class MyHomePage extends ConsumerWidget {
                   }),
             );
           }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final Article? article = await Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => const InputPage()))
+              .then((value) async {
+            print(value);
+            await context.refresh(articleStateFuture);
+          });
+          ;
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
