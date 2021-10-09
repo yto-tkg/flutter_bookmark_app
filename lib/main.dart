@@ -40,7 +40,8 @@ class MyHomePage extends ConsumerWidget {
   // String _response_message = "";
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context,
+      T Function<T>(ProviderBase<Object, T> provider) watch) {
     AsyncValue<List<Article>> articles = watch(articleStateFuture);
     final responseMessage = watch(responseMessageProvider).state;
     return Scaffold(
@@ -235,6 +236,29 @@ class MyHomePage extends ConsumerWidget {
                                                           .read(
                                                               responseMessageProvider)
                                                           .state = "更新に失敗しました。";
+                                                    }
+                                                    ;
+                                                    Navigator.of(context)
+                                                        .pop(true);
+                                                  });
+                                                  // Navigator.pop(context, true);
+                                                },
+                                              ),
+                                              ElevatedButton(
+                                                child: const Text("delete"),
+                                                onPressed: () {
+                                                  deleteArticle(value[index].id)
+                                                      .then((value) {
+                                                    if (value == 200) {
+                                                      context
+                                                          .read(
+                                                              responseMessageProvider)
+                                                          .state = "削除しました。";
+                                                    } else {
+                                                      context
+                                                          .read(
+                                                              responseMessageProvider)
+                                                          .state = "削除に失敗しました。";
                                                     }
                                                     ;
                                                     Navigator.of(context)

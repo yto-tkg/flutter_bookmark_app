@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'model/article.dart';
 import 'model/form/article_input.dart' as articleInputForm;
 import 'model/form/article_update.dart' as articleUpdateForm;
+import 'model/form/article_delete.dart' as articleDeleteForm;
 import 'model/form/author_input.dart' as authorInputForm;
 import 'model/form/author_update.dart' as authorUpdateForm;
 
@@ -62,5 +63,19 @@ Future<int> updateArticle(int articleId, String title, String link,
     return response.statusCode;
   } else {
     throw Exception('Can\'t update article');
+  }
+}
+
+Future<int> deleteArticle(int articleId) async {
+  var request = new articleDeleteForm.ArticleDelete(id: articleId);
+  print(request);
+  print(json.encode(request.toJson()));
+  final response = await http.post(Uri.parse(rootPath + "/article/delete"),
+      body: json.encode(request.toJson()),
+      headers: {"Content-Type": "application/json"});
+  if (response.statusCode == 200) {
+    return response.statusCode;
+  } else {
+    throw Exception('Can\'t delete article');
   }
 }

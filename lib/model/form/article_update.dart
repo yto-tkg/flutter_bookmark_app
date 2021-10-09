@@ -13,7 +13,7 @@ class ArticleUpdate {
       required this.author});
 
   ArticleUpdate.fromJson(Map<String, dynamic> json) {
-    title = json['id'];
+    id = json['id'];
     title = json['title'];
     content = json['content'];
     author = AuthorUpdate.fromJson(json['author']);
