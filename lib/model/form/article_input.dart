@@ -1,16 +1,17 @@
-import './author.dart';
+import 'author_input.dart';
 
-class Article {
+class ArticleInput {
   late String title;
   late String content;
-  late Author author;
+  late AuthorInput author;
 
-  Article({required this.title, required this.content, required this.author});
+  ArticleInput(
+      {required this.title, required this.content, required this.author});
 
-  Article.fromJson(Map<String, dynamic> json) {
+  ArticleInput.fromJson(Map<String, dynamic> json) {
     title = json['title'];
     content = json['content'];
-    author = Author.fromJson(json['author']);
+    author = AuthorInput.fromJson(json['author']);
   }
 
   Map<String, dynamic> toJson() {

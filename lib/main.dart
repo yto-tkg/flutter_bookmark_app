@@ -5,6 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'input.dart';
 import 'model/article.dart';
+import 'network_request.dart';
+
+String _title = "";
+String _link = "";
+String _category = "";
+
+final responseMessageProvider = StateProvider((ref) => "");
 
 void main() {
   runApp(ProviderScope(child: MyApp()));
@@ -26,10 +33,16 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends ConsumerWidget {
+  // String _title = "";
+  // String _link = "";
+  // String _category = "";
+  // bool _isError = false;
+  // String _response_message = "";
+
   @override
-  Widget build(BuildContext context,
-      T Function<T>(ProviderBase<Object, T> provider) watch) {
+  Widget build(BuildContext context, ScopedReader watch) {
     AsyncValue<List<Article>> articles = watch(articleStateFuture);
+    final responseMessage = watch(responseMessageProvider).state;
     return Scaffold(
       appBar: AppBar(
         leading: Icon(Icons.menu),
@@ -49,6 +62,7 @@ class MyHomePage extends ConsumerWidget {
                   itemCount: value.length,
                   itemBuilder: (context, index) {
                     var title = "タイトル: " + value[index].title;
+                    _title = value[index].title;
                     return Column(
                       children: [
                         Card(
@@ -101,33 +115,77 @@ class MyHomePage extends ConsumerWidget {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text(
-                                                title.toString(),
-                                                style:
-                                                    TextStyle(fontSize: 17.0),
-                                                overflow: TextOverflow.ellipsis,
+                                              // 詳細表示
+                                              // Text(
+                                              //   title.toString(),
+                                              //   style:
+                                              //       TextStyle(fontSize: 17.0),
+                                              //   overflow: TextOverflow.ellipsis,
+                                              // ),
+                                              Text('$responseMessage'),
+                                              TextField(
+                                                controller:
+                                                    TextEditingController(
+                                                        text: value[index]
+                                                            .title
+                                                            .toString()),
+                                                decoration:
+                                                    const InputDecoration(
+                                                  labelText: "タイトル",
+                                                ),
+                                                onChanged: (String text) =>
+                                                    _title = text,
                                               ),
                                               SizedBox(height: 10.0),
-                                              Text(
-                                                "リンク: " +
-                                                    value[index]
-                                                        .content
-                                                        .toString(),
-                                                style: TextStyle(
-                                                    fontSize: 16.0,
-                                                    color: Colors.grey),
-                                                overflow: TextOverflow.ellipsis,
+                                              // 詳細表示
+                                              // Text(
+                                              //   "リンク: " +
+                                              //       value[index]
+                                              //           .content
+                                              //           .toString(),
+                                              //   style: TextStyle(
+                                              //       fontSize: 16.0,
+                                              //       color: Colors.grey),
+                                              //   overflow: TextOverflow.ellipsis,
+                                              // ),
+                                              TextField(
+                                                controller:
+                                                    TextEditingController(
+                                                        text: value[index]
+                                                            .content
+                                                            .toString()),
+                                                decoration:
+                                                    const InputDecoration(
+                                                  labelText: "リンク",
+                                                ),
+                                                onChanged: (String text) =>
+                                                    _link = text,
                                               ),
-                                              Text(
-                                                "カテゴリー: " +
-                                                    value[index]
-                                                        .author
-                                                        .name
-                                                        .toString(),
-                                                style: TextStyle(
-                                                    fontSize: 16.0,
-                                                    color: Colors.grey),
-                                                overflow: TextOverflow.ellipsis,
+                                              // 詳細表示
+                                              // Text(
+                                              //   "カテゴリー: " +
+                                              //       value[index]
+                                              //           .author
+                                              //           .name
+                                              //           .toString(),
+                                              //   style: TextStyle(
+                                              //       fontSize: 16.0,
+                                              //       color: Colors.grey),
+                                              //   overflow: TextOverflow.ellipsis,
+                                              // ),
+                                              TextField(
+                                                controller:
+                                                    TextEditingController(
+                                                        text: value[index]
+                                                            .author
+                                                            .name
+                                                            .toString()),
+                                                decoration:
+                                                    const InputDecoration(
+                                                  labelText: "カテゴリー",
+                                                ),
+                                                onChanged: (String text) =>
+                                                    _category = text,
                                               ),
                                               Text(
                                                 "作成日: " +
@@ -148,6 +206,42 @@ class MyHomePage extends ConsumerWidget {
                                                     fontSize: 16.0,
                                                     color: Colors.grey),
                                                 overflow: TextOverflow.ellipsis,
+                                              ),
+                                              ElevatedButton(
+                                                child: const Text("update"),
+                                                onPressed: () {
+                                                  if (_title == "") {
+                                                    context
+                                                        .read(
+                                                            responseMessageProvider)
+                                                        .state = "タイトルを入力してください。";
+                                                  }
+                                                  updateArticle(
+                                                          value[index].id,
+                                                          _title,
+                                                          _link,
+                                                          value[index]
+                                                              .author
+                                                              .id,
+                                                          _category)
+                                                      .then((value) {
+                                                    if (value == 200) {
+                                                      context
+                                                          .read(
+                                                              responseMessageProvider)
+                                                          .state = "更新しました。";
+                                                    } else {
+                                                      context
+                                                          .read(
+                                                              responseMessageProvider)
+                                                          .state = "更新に失敗しました。";
+                                                    }
+                                                    ;
+                                                    Navigator.of(context)
+                                                        .pop(true);
+                                                  });
+                                                  // Navigator.pop(context, true);
+                                                },
                                               ),
                                             ],
                                           ),
