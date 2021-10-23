@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bookmark_app/auth_request.dart';
 import 'package:flutter_bookmark_app/state_manager.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_session/flutter_session.dart';
 
 import 'input.dart';
+import 'login.dart';
 import 'model/article.dart';
-import 'network_request.dart';
+import 'article_request.dart';
 
 String _title = "";
 String _link = "";
@@ -13,8 +16,18 @@ String _category = "";
 
 final responseMessageProvider = StateProvider((ref) => "");
 
-void main() {
-  runApp(ProviderScope(child: MyApp()));
+Future<void> main() async {
+  // TODO セッションからログインユーザー情報取得できたらMyApp 取得できなければログイン画面へ遷移
+  dynamic loginUser = await FlutterSession().get("accessToken");
+  print(loginUser);
+  if (loginUser != null && loginUser != '') {
+    runApp(ProviderScope(child: MyApp()));
+  } else {
+    runApp(ProviderScope(
+        child: new MaterialApp(
+      home: new LoginPage(),
+    )));
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -48,7 +61,26 @@ class MyHomePage extends ConsumerWidget {
       appBar: AppBar(
         leading: Icon(Icons.menu),
         title: Text('Bookmark List'),
-        actions: [IconButton(icon: Icon(Icons.search), onPressed: () {})],
+        actions: [
+          IconButton(icon: Icon(Icons.search), onPressed: () {}),
+          IconButton(
+              icon: Icon(Icons.logout),
+              onPressed: () {
+                logout().then((value) {
+                  if (value == 200) {
+                    context.read(responseMessageProvider).state = "ログアウトしました。";
+                  } else {
+                    context.read(responseMessageProvider).state =
+                        "ログアウトに失敗しました。";
+                  }
+                  ;
+                  runApp(ProviderScope(
+                      child: new MaterialApp(
+                    home: new LoginPage(),
+                  )));
+                });
+              })
+        ],
       ),
       body: articles.when(
           loading: () => const Center(child: CircularProgressIndicator()),
