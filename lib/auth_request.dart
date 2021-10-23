@@ -9,6 +9,7 @@ import 'dart:io';
 import 'package:webview_cookie_manager/webview_cookie_manager.dart';
 
 import 'model/form/auth/login.dart' as loginForm;
+import 'model/form/auth/signup.dart' as signupForm;
 
 final rootPath = 'http://localhost:5000';
 final CookieJar _cookieJar = CookieJar();
@@ -20,7 +21,29 @@ User parseUser(String responseBody) {
   return User.fromJson(response);
 }
 
-Future<String> login(String email, String password) async {
+Future<int> signup(String email, String password) async {
+  if (_client is BrowserClient)
+    (_client as BrowserClient).withCredentials = true;
+  var request = new signupForm.Signup(email: email, password: password);
+  print(request);
+  print(json.encode(request.toJson()));
+
+  final response = await _client.post(Uri.parse(rootPath + "/signup"),
+      body: json.encode(request.toJson()),
+      headers: {"Content-Type": "application/json"});
+  // print("■■■■■■■■■■■■■■■response■■■■■■■■■■■■■■■■■■■■");
+  // print(response.headers);
+  if (response.statusCode == 200) {
+    var session = FlutterSession();
+    await session.set("accessToken", json.decode(response.body)['data']);
+    return response.statusCode;
+  } else {
+    return response.statusCode;
+    // throw Exception('Can\'t login');
+  }
+}
+
+Future<int> login(String email, String password) async {
   if (_client is BrowserClient)
     (_client as BrowserClient).withCredentials = true;
   var request = new loginForm.Login(email: email, password: password);
@@ -35,43 +58,12 @@ Future<String> login(String email, String password) async {
   // print("■■■■■■■■■■■■■■■response■■■■■■■■■■■■■■■■■■■■");
   // print(response.headers);
   if (response.statusCode == 200) {
-    // final cookieHeader = response.headers[HttpHeaders.setCookieHeader];
-    // print("■■■■■■■■■■■■■■■cookieHeader■■■■■■■■■■■■■■■■■■■■");
-    // print(cookieHeader);
-    // if (cookieHeader != null && cookieHeader.isNotEmpty) {
-    //   // set-cookieが複数あった場合は、","でjoinして返ってくるので分割する必要がある
-    //   final cookies = cookieHeader.split(",");
-    //   print("■■■■■■■■■■■■■■■cookiesss■■■■■■■■■■■■■■■■■■■■");
-    //   print(cookies);
-    //   if (cookies.isNotEmpty) {
-    //     _cookieJar.saveFromResponse(
-    //       response.request!.url,
-    //       cookies.map((cookie) => Cookie.fromSetCookieValue(cookie)).toList(),
-    //     );
-    //   }
-    // }
-
-    // List<Cookie> results = await cj.loadForRequest(Uri.parse(rootPath));
-    // print("■■■■■■■■■■■■■■■cookie■■■■■■■■■■■■■■■■■■■■");
-    // print(results);
-
-    // List<Cookie> results2 =
-    //     await cj.loadForRequest(Uri.parse('http://localhost:55883'));
-    // print("■■■■■■■■■■■■■■■cookie2■■■■■■■■■■■■■■■■■■■■");
-    // print(results2);
-
-    // final cookieManager = WebviewCookieManager();
-    // final gotCookies =
-    //     await cookieManager.getCookies('http://localhost:55883/');
-    // for (var item in gotCookies) {
-    //   print(item);
-    // }
-
     var session = FlutterSession();
     await session.set("accessToken", json.decode(response.body)['data']);
-    return response.statusCode.toString();
+    return response.statusCode;
   } else {
-    throw Exception('Can\'t login');
+    return response.statusCode;
+    // throw Exception('Can\'t login');
   }
 }
 
@@ -87,24 +79,5 @@ Future<String> logout() async {
     return response.statusCode.toString();
   } else {
     throw Exception('Can\'t logout');
-  }
-
-  void _saveCookies(Uri uri, String? cookieHeader) {
-    if (cookieHeader == null || cookieHeader.isEmpty) {
-      return;
-    }
-    // set-cookieが複数あった場合は、","でjoinして返ってくるので分割する必要がある
-    final cookies = cookieHeader.split(",");
-    if (cookies.isEmpty) {
-      return;
-    }
-    _cookieJar.saveFromResponse(
-      uri,
-      cookies.map((cookie) => Cookie.fromSetCookieValue(cookie)).toList(),
-    );
-  }
-
-  String _getCookies(List<Cookie> cookies) {
-    return cookies.map((cookie) => "${cookie.name}=${cookie.value}").join('; ');
   }
 }

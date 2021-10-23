@@ -17,11 +17,10 @@ String _category = "";
 final responseMessageProvider = StateProvider((ref) => "");
 
 Future<void> main() async {
-  // TODO セッションからログインユーザー情報取得できたらMyApp 取得できなければログイン画面へ遷移
   dynamic loginUser = await FlutterSession().get("accessToken");
   print(loginUser);
   if (loginUser != null && loginUser != '') {
-    runApp(ProviderScope(child: MyApp()));
+    runApp(ProviderScope(child: Top()));
   } else {
     runApp(ProviderScope(
         child: new MaterialApp(
@@ -30,7 +29,7 @@ Future<void> main() async {
   }
 }
 
-class MyApp extends StatelessWidget {
+class Top extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -95,7 +94,6 @@ class MyHomePage extends ConsumerWidget {
                   itemCount: value.length,
                   itemBuilder: (context, index) {
                     var title = "タイトル: " + value[index].title;
-                    _title = value[index].title;
                     return Column(
                       children: [
                         Card(
@@ -167,7 +165,7 @@ class MyHomePage extends ConsumerWidget {
                                                   labelText: "タイトル",
                                                 ),
                                                 onChanged: (String text) =>
-                                                    _title = text,
+                                                    value[index].title = text,
                                               ),
                                               SizedBox(height: 10.0),
                                               // 詳細表示
@@ -192,7 +190,7 @@ class MyHomePage extends ConsumerWidget {
                                                   labelText: "リンク",
                                                 ),
                                                 onChanged: (String text) =>
-                                                    _link = text,
+                                                    value[index].content = text,
                                               ),
                                               // 詳細表示
                                               // Text(
@@ -218,7 +216,8 @@ class MyHomePage extends ConsumerWidget {
                                                   labelText: "カテゴリー",
                                                 ),
                                                 onChanged: (String text) =>
-                                                    _category = text,
+                                                    value[index].author.name =
+                                                        text,
                                               ),
                                               Text(
                                                 "作成日: " +
@@ -243,7 +242,8 @@ class MyHomePage extends ConsumerWidget {
                                               ElevatedButton(
                                                 child: const Text("update"),
                                                 onPressed: () {
-                                                  if (_title == "") {
+                                                  if (value[index].title ==
+                                                      "") {
                                                     context
                                                         .read(
                                                             responseMessageProvider)
@@ -251,12 +251,14 @@ class MyHomePage extends ConsumerWidget {
                                                   }
                                                   updateArticle(
                                                           value[index].id,
-                                                          _title,
-                                                          _link,
+                                                          value[index].title,
+                                                          value[index].content,
                                                           value[index]
                                                               .author
                                                               .id,
-                                                          _category)
+                                                          value[index]
+                                                              .author
+                                                              .name)
                                                       .then((value) {
                                                     if (value == 200) {
                                                       context

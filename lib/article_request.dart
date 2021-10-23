@@ -69,6 +69,7 @@ Future<int> updateArticle(int articleId, String title, String link,
     int authorId, String category) async {
   if (_client is BrowserClient)
     (_client as BrowserClient).withCredentials = true;
+  dynamic accessToken = await FlutterSession().get("accessToken");
   var author = new authorUpdateForm.AuthorUpdate(id: authorId, name: category);
   var request = new articleUpdateForm.ArticleUpdate(
       id: articleId, title: title, content: link, author: author);
@@ -76,7 +77,10 @@ Future<int> updateArticle(int articleId, String title, String link,
   print(json.encode(request.toJson()));
   final response = await _client.post(Uri.parse(rootPath + "/article/update"),
       body: json.encode(request.toJson()),
-      headers: {"Content-Type": "application/json"});
+      headers: {
+        "Content-Type": "application/json",
+        "accessToken": accessToken.toString()
+      });
   if (response.statusCode == 200) {
     return response.statusCode;
   } else {
@@ -87,12 +91,16 @@ Future<int> updateArticle(int articleId, String title, String link,
 Future<int> deleteArticle(int articleId) async {
   if (_client is BrowserClient)
     (_client as BrowserClient).withCredentials = true;
+  dynamic accessToken = await FlutterSession().get("accessToken");
   var request = new articleDeleteForm.ArticleDelete(id: articleId);
   print(request);
   print(json.encode(request.toJson()));
   final response = await _client.post(Uri.parse(rootPath + "/article/delete"),
       body: json.encode(request.toJson()),
-      headers: {"Content-Type": "application/json"});
+      headers: {
+        "Content-Type": "application/json",
+        "accessToken": accessToken.toString()
+      });
   if (response.statusCode == 200) {
     return response.statusCode;
   } else {

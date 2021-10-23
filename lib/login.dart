@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bookmark_app/auth_request.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'main.dart';
 
@@ -21,6 +22,17 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Login"),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.login),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        // トップページへ遷移
+                        builder: (context) => Top()));
+              })
+        ],
       ),
       body: Container(
         padding: const EdgeInsets.all(40.0),
@@ -58,21 +70,61 @@ class _LoginPageState extends State<LoginPage> {
                     return;
                   }
                   setState(() {
-                    _loginResponse = login(_email, _password).toString();
+                    login(_email, _password).then((value) {
+                      if (value == 200) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                // トップページへ遷移
+                                builder: (context) => Top()));
+                      } else {
+                        setState(() {
+                          _isError = true;
+                          _message =
+                              "ログインに失敗しました。\nメールアドレスとパスワードをお確かめの上再試行してください。";
+                        });
+                        return;
+                      }
+                      ;
+                    });
                   });
-                  if (_loginResponse == "200") {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            // （2） 実際に表示するページ(ウィジェット)を指定する
-                            builder: (context) => MyApp()));
-                  } else {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            // （2） 実際に表示するページ(ウィジェット)を指定する
-                            builder: (context) => LoginPage()));
+                },
+              ),
+              ElevatedButton(
+                child: const Text("signup"),
+                onPressed: () {
+                  if (_email == "") {
+                    setState(() {
+                      _isError = true;
+                      _message = "メールアドレスを入力してください。";
+                    });
+                    return;
                   }
+                  if (_password == "") {
+                    setState(() {
+                      _isError = true;
+                      _message = "パスワードを入力してください。";
+                    });
+                    return;
+                  }
+                  setState(() {
+                    signup(_email, _password).then((value) {
+                      if (value == 200) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                // トップページへ遷移
+                                builder: (context) => Top()));
+                      } else {
+                        setState(() {
+                          _isError = true;
+                          _message = "会員登録に失敗しました。";
+                        });
+                        return;
+                      }
+                      ;
+                    });
+                  });
                 },
               ),
               if (_isError)
