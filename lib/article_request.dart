@@ -27,8 +27,7 @@ Article parseArticle(String responseBody) {
   return Article.fromJson(response);
 }
 
-// cookieをセットできていない
-// ログイン時にcookieを取得してセットする必要がありそう
+// 一覧
 Future<List<Article>> fetchArticles() async {
   if (_client is BrowserClient)
     (_client as BrowserClient).withCredentials = true;
@@ -43,6 +42,22 @@ Future<List<Article>> fetchArticles() async {
   }
 }
 
+// 検索
+Future<List<Article>> searchArticle(String content) async {
+  if (_client is BrowserClient)
+    (_client as BrowserClient).withCredentials = true;
+  dynamic accessToken = await FlutterSession().get("accessToken");
+  final response = await _client.get(
+      Uri.parse(rootPath + "/article/search?content=" + content),
+      headers: {"accessToken": accessToken.toString()});
+  if (response.statusCode == 200) {
+    return compute(parseArticles, response.body);
+  } else {
+    throw Exception('Can\'t search article');
+  }
+}
+
+// 新規登録
 Future<Article> inputArticle(String title, String link, String category) async {
   if (_client is BrowserClient)
     (_client as BrowserClient).withCredentials = true;
@@ -65,6 +80,7 @@ Future<Article> inputArticle(String title, String link, String category) async {
   }
 }
 
+// 更新
 Future<int> updateArticle(int articleId, String title, String link,
     int authorId, String category) async {
   if (_client is BrowserClient)
@@ -88,6 +104,7 @@ Future<int> updateArticle(int articleId, String title, String link,
   }
 }
 
+// 削除
 Future<int> deleteArticle(int articleId) async {
   if (_client is BrowserClient)
     (_client as BrowserClient).withCredentials = true;

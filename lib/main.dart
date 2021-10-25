@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bookmark_app/auth_request.dart';
+import 'package:flutter_bookmark_app/search.dart';
 import 'package:flutter_bookmark_app/state_manager.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,7 +19,6 @@ final responseMessageProvider = StateProvider((ref) => "");
 
 Future<void> main() async {
   dynamic loginUser = await FlutterSession().get("accessToken");
-  print(loginUser);
   if (loginUser != null && loginUser != '') {
     runApp(ProviderScope(child: Top()));
   } else {
@@ -32,6 +32,7 @@ Future<void> main() async {
 class Top extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    FutureProvider<List<Article>>? articles;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
@@ -39,29 +40,46 @@ class Top extends StatelessWidget {
         primarySwatch: Colors.indigo,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(),
+      home: TopPage(articles, false),
     );
   }
 }
 
-class MyHomePage extends ConsumerWidget {
+class TopPage extends ConsumerWidget {
   // String _title = "";
   // String _link = "";
   // String _category = "";
   // bool _isError = false;
   // String _response_message = "";
+  TopPage(this.articlesBySearchContent, this.searchFlg);
+  late FutureProvider<List<Article>>? articlesBySearchContent;
+  late bool searchFlg;
 
   @override
   Widget build(BuildContext context,
       T Function<T>(ProviderBase<Object, T> provider) watch) {
-    AsyncValue<List<Article>> articles = watch(articleStateFuture);
+    AsyncValue<List<Article>> articles;
+    if (articlesBySearchContent != null && searchFlg) {
+      articles = watch(articlesBySearchContent!);
+    } else {
+      articles = watch(articleStateFuture);
+    }
+
     final responseMessage = watch(responseMessageProvider).state;
     return Scaffold(
       appBar: AppBar(
         leading: Icon(Icons.menu),
         title: Text('Bookmark List'),
         actions: [
-          IconButton(icon: Icon(Icons.search), onPressed: () {}),
+          IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        // トップページへ遷移
+                        builder: (context) => SearchPage()));
+              }),
           IconButton(
               icon: Icon(Icons.logout),
               onPressed: () {

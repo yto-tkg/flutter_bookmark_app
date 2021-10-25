@@ -22,17 +22,6 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Login"),
-        actions: [
-          IconButton(
-              icon: Icon(Icons.login),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        // トップページへ遷移
-                        builder: (context) => Top()));
-              })
-        ],
       ),
       body: Container(
         padding: const EdgeInsets.all(40.0),
