@@ -21,6 +21,7 @@ User parseUser(String responseBody) {
   return User.fromJson(response);
 }
 
+// 会員登録
 Future<int> signup(String email, String password) async {
   if (_client is BrowserClient)
     (_client as BrowserClient).withCredentials = true;
@@ -43,6 +44,7 @@ Future<int> signup(String email, String password) async {
   }
 }
 
+// ログイン
 Future<int> login(String email, String password) async {
   if (_client is BrowserClient)
     (_client as BrowserClient).withCredentials = true;
@@ -67,6 +69,7 @@ Future<int> login(String email, String password) async {
   }
 }
 
+// ログアウト
 Future<String> logout() async {
   if (_client is BrowserClient)
     (_client as BrowserClient).withCredentials = true;

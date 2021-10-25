@@ -5,3 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final articleStateFuture = FutureProvider<List<Article>>((ref) async {
   return fetchArticles();
 });
+
+final searchStateFuture =
+    FutureProvider.family<List<Article>, String>((ref, content) async {
+  return searchArticle(content);
+});
