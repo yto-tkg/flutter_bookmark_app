@@ -64,11 +64,12 @@ class TopPage extends ConsumerWidget {
     } else {
       articles = watch(articleStateFuture);
     }
+    var authors = watch(authorStateFuture);
 
     final responseMessage = watch(responseMessageProvider).state;
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.menu),
+        // leading: Icon(Icons.menu),
         title: Text('Bookmark List'),
         actions: [
           IconButton(
@@ -99,6 +100,41 @@ class TopPage extends ConsumerWidget {
               })
         ],
       ),
+      drawer: authors.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, stackTrace) =>
+              Center(child: Text('${error.toString()}')),
+          data: (value) {
+            return RefreshIndicator(
+              onRefresh: () async {
+                await context.refresh(authorStateFuture);
+              },
+              child: Drawer(
+                child: ListView.builder(
+                    itemCount: value.length,
+                    itemBuilder: (context, index) {
+                      padding:
+                      EdgeInsets.zero;
+                      return Column(
+                        children: [
+                          const DrawerHeader(
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                            ),
+                            child: Text('Category'),
+                          ),
+                          ListTile(
+                            title: Text(value[index].name),
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      );
+                    }),
+              ),
+            );
+          }),
       body: articles.when(
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, stackTrace) =>
