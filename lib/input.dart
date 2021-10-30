@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bookmark_app/model/article.dart';
+import 'package:flutter_bookmark_app/state_manager.dart';
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:flutter_bookmark_app/article_request.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod/src/future_provider.dart';
+
+import 'main.dart';
 
 class InputPage extends StatefulWidget {
   const InputPage({Key? key}) : super(key: key);
@@ -73,21 +79,52 @@ class _InputPageState extends State<InputPage> {
                   ],
                 ),
               ),
-              ElevatedButton(
-                child: const Text("save"),
-                onPressed: () {
-                  if (_title == "") {
-                    setState(() {
-                      _isError = true;
+              IconButton(
+                  icon: Icon(Icons.send),
+                  onPressed: () {
+                    if (_title == "") {
+                      setState(() {
+                        _isError = true;
+                      });
+                      return;
+                    }
+                    // setState(() {
+                    inputArticle(_title, _link, _category).then((value) {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       // トップページへ遷移
+                      //       builder: (context) =>
+                      //           TopPage(null, false, "Bookmark List")),
+                      // ).then((value) => setState(() {}));
+                      Navigator.of(context).pop(true);
                     });
-                    return;
-                  }
-                  setState(() {
-                    inputArticle(_title, _link, _category);
-                  });
-                  Navigator.pop(context, true);
-                },
-              ),
+                  }),
+              // ElevatedButton(
+              //   child: const Text("save"),
+              //   onPressed: () {
+              //     if (_title == "") {
+              //       setState(() {
+              //         _isError = true;
+              //       });
+              //       return;
+              //     }
+              //     // setState(() {
+              //     inputArticle(_title, _link, _category).then((value) {
+              //       // Navigator.push(
+              //       //   context,
+              //       //   MaterialPageRoute(
+              //       //       // トップページへ遷移
+              //       //       builder: (context) =>
+              //       //           TopPage(null, false, "Bookmark List")),
+              //       // ).then((value) => setState(() {}));
+              //       runApp(ProviderScope(
+              //           child: new MaterialApp(
+              //         home: new TopPage(null, false, "Bookmark List"),
+              //       )));
+              //     });
+              //   },
+              // ),
               if (_isError)
                 const Text(
                   "タイトルを入力してください。",

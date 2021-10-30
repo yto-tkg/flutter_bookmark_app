@@ -41,80 +41,85 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 onChanged: (String text) => _password = text,
               ),
-              ElevatedButton(
-                child: const Text("login"),
-                onPressed: () {
-                  if (_email == "") {
-                    setState(() {
-                      _isError = true;
-                      _message = "メールアドレスを入力してください。";
-                    });
-                    return;
-                  }
-                  if (_password == "") {
-                    setState(() {
-                      _isError = true;
-                      _message = "パスワードを入力してください。";
-                    });
-                    return;
-                  }
-                  setState(() {
-                    login(_email, _password).then((value) {
-                      if (value == 200) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                // トップページへ遷移
-                                builder: (context) => Top()));
-                      } else {
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  ElevatedButton(
+                    child: const Text("login"),
+                    onPressed: () {
+                      if (_email == "") {
                         setState(() {
                           _isError = true;
-                          _message =
-                              "ログインに失敗しました。\nメールアドレスとパスワードをお確かめの上再試行してください。";
+                          _message = "メールアドレスを入力してください。";
                         });
                         return;
                       }
-                      ;
-                    });
-                  });
-                },
-              ),
-              ElevatedButton(
-                child: const Text("signup"),
-                onPressed: () {
-                  if (_email == "") {
-                    setState(() {
-                      _isError = true;
-                      _message = "メールアドレスを入力してください。";
-                    });
-                    return;
-                  }
-                  if (_password == "") {
-                    setState(() {
-                      _isError = true;
-                      _message = "パスワードを入力してください。";
-                    });
-                    return;
-                  }
-                  setState(() {
-                    signup(_email, _password).then((value) {
-                      if (value == 200) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                // トップページへ遷移
-                                builder: (context) => Top()));
-                      } else {
+                      if (_password == "") {
                         setState(() {
                           _isError = true;
-                          _message = "会員登録に失敗しました。";
+                          _message = "パスワードを入力してください。";
                         });
                         return;
                       }
-                      ;
-                    });
-                  });
-                },
+                      setState(() {
+                        login(_email, _password).then((value) {
+                          if (value == 200) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    // トップページへ遷移
+                                    builder: (context) => Top()));
+                          } else {
+                            setState(() {
+                              _isError = true;
+                              _message =
+                                  "ログインに失敗しました。\nメールアドレスとパスワードをお確かめの上再試行してください。";
+                            });
+                            return;
+                          }
+                          ;
+                        });
+                      });
+                    },
+                  ),
+                  ElevatedButton(
+                    child: const Text("signup"),
+                    onPressed: () {
+                      if (_email == "") {
+                        setState(() {
+                          _isError = true;
+                          _message = "メールアドレスを入力してください。";
+                        });
+                        return;
+                      }
+                      if (_password == "") {
+                        setState(() {
+                          _isError = true;
+                          _message = "パスワードを入力してください。";
+                        });
+                        return;
+                      }
+                      setState(() {
+                        signup(_email, _password).then((value) {
+                          if (value == 200) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    // トップページへ遷移
+                                    builder: (context) => Top()));
+                          } else {
+                            setState(() {
+                              _isError = true;
+                              _message = "会員登録に失敗しました。";
+                            });
+                            return;
+                          }
+                          ;
+                        });
+                      });
+                    },
+                  ),
+                ],
               ),
               if (_isError)
                 Text(
