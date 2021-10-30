@@ -9,6 +9,15 @@ final articleStateFuture = FutureProvider<List<Article>>((ref) async {
   return fetchArticles();
 });
 
+final refreshArticleStateFuture = FutureProvider<List<Article>>((ref) async {
+  return ref.container.refresh(articleStateFuture);
+});
+
+final getArticleByAuthorIdStateFuture =
+    FutureProvider.family<List<Article>, String>((ref, authorId) async {
+  return getArticleByAuthorId(authorId);
+});
+
 final searchStateFuture =
     FutureProvider.family<List<Article>, String>((ref, content) async {
   return searchArticle(content);
@@ -16,4 +25,9 @@ final searchStateFuture =
 
 final authorStateFuture = FutureProvider<List<Author>>((ref) async {
   return fetchAuthors();
+});
+
+final inputAuthorStateFuture =
+    FutureProvider.family<Author, String>((ref, name) async {
+  return inputAuthor(name);
 });

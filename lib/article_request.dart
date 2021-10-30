@@ -42,6 +42,21 @@ Future<List<Article>> fetchArticles() async {
   }
 }
 
+// カテゴリーid指定
+Future<List<Article>> getArticleByAuthorId(String authorId) async {
+  if (_client is BrowserClient)
+    (_client as BrowserClient).withCredentials = true;
+  dynamic accessToken = await FlutterSession().get("accessToken");
+  final response = await _client.get(
+      Uri.parse(rootPath + "/article/author?id=" + authorId),
+      headers: {"accessToken": accessToken.toString()});
+  if (response.statusCode == 200) {
+    return compute(parseArticles, response.body);
+  } else {
+    throw Exception('Can\'t getArticleByAuthorId');
+  }
+}
+
 // 検索
 Future<List<Article>> searchArticle(String content) async {
   if (_client is BrowserClient)

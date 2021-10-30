@@ -55,11 +55,11 @@ Future<List<Author>> fetchAuthors() async {
 // }
 
 // 新規登録
-Future<Author> inputAuthor(String category) async {
+Future<Author> inputAuthor(String name) async {
   if (_client is BrowserClient)
     (_client as BrowserClient).withCredentials = true;
   dynamic accessToken = await FlutterSession().get("accessToken");
-  var request = new authorInputForm.AuthorInput(name: category);
+  var request = new authorInputForm.AuthorInput(name: name);
   print(request);
   print(json.encode(request.toJson()));
   final response = await _client.post(Uri.parse(rootPath + "/author/input"),
@@ -76,11 +76,11 @@ Future<Author> inputAuthor(String category) async {
 }
 
 // 更新
-Future<int> updateAuthor(int authorId, String category) async {
+Future<int> updateAuthor(int authorId, String name) async {
   if (_client is BrowserClient)
     (_client as BrowserClient).withCredentials = true;
   dynamic accessToken = await FlutterSession().get("accessToken");
-  var request = new authorUpdateForm.AuthorUpdate(id: authorId, name: category);
+  var request = new authorUpdateForm.AuthorUpdate(id: authorId, name: name);
   print(request);
   print(json.encode(request.toJson()));
   final response = await _client.post(Uri.parse(rootPath + "/author/update"),

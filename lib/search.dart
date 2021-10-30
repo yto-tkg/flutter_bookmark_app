@@ -48,7 +48,8 @@ class _SearchPageState extends State<SearchPage> {
                         context,
                         MaterialPageRoute(
                             // トップページへ遷移
-                            builder: (context) => TopPage(articles, true)));
+                            builder: (context) => TopPage(
+                                articles, true, '「' + _content + '」の検索結果')));
                   });
                 },
               ),
