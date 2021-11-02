@@ -3,6 +3,7 @@ import 'package:flutter_bookmark_app/main.dart';
 import 'package:flutter_bookmark_app/state_manager.dart';
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:flutter_bookmark_app/article_request.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -12,6 +13,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   String _content = "";
+  String _errorMessage = "";
 
   bool _isError = false;
 
@@ -39,6 +41,7 @@ class _SearchPageState extends State<SearchPage> {
                   if (_content == "") {
                     setState(() {
                       _isError = true;
+                      _errorMessage = "検索内容を入力してください";
                     });
                     return;
                   }
@@ -54,8 +57,8 @@ class _SearchPageState extends State<SearchPage> {
                 },
               ),
               if (_isError)
-                const Text(
-                  "検索内容を入力してください。",
+                Text(
+                  _errorMessage,
                   style: TextStyle(color: Colors.red),
                 ),
             ],
