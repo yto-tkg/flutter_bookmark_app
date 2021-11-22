@@ -71,12 +71,13 @@ Future<Author> inputAuthor(String name) async {
   if (response.statusCode == 200) {
     return compute(parseAuthor, response.body);
   } else {
+    // return null;
     throw Exception('Can\'t input author');
   }
 }
 
 // 更新
-Future<int> updateAuthor(int authorId, String name) async {
+Future<int?> updateAuthor(int authorId, String name) async {
   if (_client is BrowserClient)
     (_client as BrowserClient).withCredentials = true;
   dynamic accessToken = await FlutterSession().get("accessToken");
@@ -92,12 +93,13 @@ Future<int> updateAuthor(int authorId, String name) async {
   if (response.statusCode == 200) {
     return response.statusCode;
   } else {
-    throw Exception('Can\'t update author');
+    return null;
+    // throw Exception('Can\'t update author');
   }
 }
 
 // 削除
-Future<int> deleteAuthor(int authorId) async {
+Future<int?> deleteAuthor(int authorId) async {
   if (_client is BrowserClient)
     (_client as BrowserClient).withCredentials = true;
   dynamic accessToken = await FlutterSession().get("accessToken");
@@ -113,6 +115,7 @@ Future<int> deleteAuthor(int authorId) async {
   if (response.statusCode == 200) {
     return response.statusCode;
   } else {
-    throw Exception('Can\'t delete author');
+    return null;
+    // throw Exception('Can\'t delete author');
   }
 }

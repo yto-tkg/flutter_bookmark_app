@@ -21,6 +21,7 @@ class _InputPageState extends State<InputPage> {
   IconData? _icon;
 
   bool _isError = false;
+  String _errorMessage = "";
 
   _pickIcon() async {
     IconData? icon = await FlutterIconPicker.showIconPicker(context);
@@ -85,11 +86,19 @@ class _InputPageState extends State<InputPage> {
                     if (_title == "") {
                       setState(() {
                         _isError = true;
+                        _errorMessage = "タイトルを入力してください。";
                       });
                       return;
                     }
                     // setState(() {
                     inputArticle(_title, _link, _category).then((value) {
+                      if (value == null) {
+                        setState(() {
+                          _isError = true;
+                          _errorMessage = "登録に失敗しました。";
+                        });
+                        return;
+                      }
                       // Navigator.push(
                       //   context,
                       //   MaterialPageRoute(
@@ -126,8 +135,8 @@ class _InputPageState extends State<InputPage> {
               //   },
               // ),
               if (_isError)
-                const Text(
-                  "タイトルを入力してください。",
+                Text(
+                  _errorMessage,
                   style: TextStyle(color: Colors.red),
                 ),
             ],
