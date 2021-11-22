@@ -73,7 +73,8 @@ Future<List<Article>> searchArticle(String content) async {
 }
 
 // 新規登録
-Future<Article> inputArticle(String title, String link, String category) async {
+Future<Article?> inputArticle(
+    String title, String link, String category) async {
   if (_client is BrowserClient)
     (_client as BrowserClient).withCredentials = true;
   dynamic accessToken = await FlutterSession().get("accessToken");
@@ -91,12 +92,13 @@ Future<Article> inputArticle(String title, String link, String category) async {
   if (response.statusCode == 200) {
     return compute(parseArticle, response.body);
   } else {
-    throw Exception('Can\'t input article');
+    return null;
+    // throw Exception('Can\'t input article');
   }
 }
 
 // 更新
-Future<int> updateArticle(int articleId, String title, String link,
+Future<int?> updateArticle(int articleId, String title, String link,
     int authorId, String category) async {
   if (_client is BrowserClient)
     (_client as BrowserClient).withCredentials = true;
@@ -115,12 +117,13 @@ Future<int> updateArticle(int articleId, String title, String link,
   if (response.statusCode == 200) {
     return response.statusCode;
   } else {
-    throw Exception('Can\'t update article');
+    return null;
+    // throw Exception('Can\'t update article');
   }
 }
 
 // 削除
-Future<int> deleteArticle(int articleId) async {
+Future<int?> deleteArticle(int articleId) async {
   if (_client is BrowserClient)
     (_client as BrowserClient).withCredentials = true;
   dynamic accessToken = await FlutterSession().get("accessToken");
@@ -136,6 +139,7 @@ Future<int> deleteArticle(int articleId) async {
   if (response.statusCode == 200) {
     return response.statusCode;
   } else {
-    throw Exception('Can\'t delete article');
+    return null;
+    // throw Exception('Can\'t delete article');
   }
 }
