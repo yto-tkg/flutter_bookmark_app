@@ -36,6 +36,7 @@ class _LoginPageState extends State<LoginPage> {
                 onChanged: (String text) => _email = text,
               ),
               TextField(
+                obscureText: true,
                 decoration: const InputDecoration(
                   labelText: "パスワード",
                 ),
