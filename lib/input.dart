@@ -99,41 +99,9 @@ class _InputPageState extends State<InputPage> {
                         });
                         return;
                       }
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       // トップページへ遷移
-                      //       builder: (context) =>
-                      //           TopPage(null, false, "Bookmark List")),
-                      // ).then((value) => setState(() {}));
                       Navigator.of(context).pop(true);
                     });
                   }),
-              // ElevatedButton(
-              //   child: const Text("save"),
-              //   onPressed: () {
-              //     if (_title == "") {
-              //       setState(() {
-              //         _isError = true;
-              //       });
-              //       return;
-              //     }
-              //     // setState(() {
-              //     inputArticle(_title, _link, _category).then((value) {
-              //       // Navigator.push(
-              //       //   context,
-              //       //   MaterialPageRoute(
-              //       //       // トップページへ遷移
-              //       //       builder: (context) =>
-              //       //           TopPage(null, false, "Bookmark List")),
-              //       // ).then((value) => setState(() {}));
-              //       runApp(ProviderScope(
-              //           child: new MaterialApp(
-              //         home: new TopPage(null, false, "Bookmark List"),
-              //       )));
-              //     });
-              //   },
-              // ),
               if (_isError)
                 Text(
                   _errorMessage,

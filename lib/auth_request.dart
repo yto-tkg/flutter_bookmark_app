@@ -26,21 +26,16 @@ Future<int> signup(String email, String password) async {
   if (_client is BrowserClient)
     (_client as BrowserClient).withCredentials = true;
   var request = new signupForm.Signup(email: email, password: password);
-  print(request);
-  print(json.encode(request.toJson()));
 
   final response = await _client.post(Uri.parse(rootPath + "/signup"),
       body: json.encode(request.toJson()),
       headers: {"Content-Type": "application/json"});
-  // print("■■■■■■■■■■■■■■■response■■■■■■■■■■■■■■■■■■■■");
-  // print(response.headers);
   if (response.statusCode == 200) {
     var session = FlutterSession();
     await session.set("accessToken", json.decode(response.body)['data']);
     return response.statusCode;
   } else {
     return response.statusCode;
-    // throw Exception('Can\'t login');
   }
 }
 
@@ -49,23 +44,18 @@ Future<int> login(String email, String password) async {
   if (_client is BrowserClient)
     (_client as BrowserClient).withCredentials = true;
   var request = new loginForm.Login(email: email, password: password);
-  print(request);
-  print(json.encode(request.toJson()));
 
   var cj = CookieJar();
 
   final response = await _client.post(Uri.parse(rootPath + "/login"),
       body: json.encode(request.toJson()),
       headers: {"Content-Type": "application/json"});
-  // print("■■■■■■■■■■■■■■■response■■■■■■■■■■■■■■■■■■■■");
-  // print(response.headers);
   if (response.statusCode == 200) {
     var session = FlutterSession();
     await session.set("accessToken", json.decode(response.body)['data']);
     return response.statusCode;
   } else {
     return response.statusCode;
-    // throw Exception('Can\'t login');
   }
 }
 

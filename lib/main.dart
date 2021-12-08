@@ -50,11 +50,6 @@ class Top extends StatelessWidget {
 }
 
 class TopPage extends ConsumerWidget {
-  // String _title = "";
-  // String _link = "";
-  // String _category = "";
-  // bool _isError = false;
-  // String _response_message = "";
   TopPage(this.articlesBySearchContent, this.searchFlg, this.headerTitle);
   late FutureProvider<List<Article>>? articlesBySearchContent;
   late bool searchFlg;
@@ -147,15 +142,6 @@ class TopPage extends ConsumerWidget {
                                       await context.refresh(authorStateFuture);
                                     });
                                   },
-                                  // onPressed: () {
-                                  //   Navigator.push(
-                                  //       context,
-                                  //       MaterialPageRoute(
-                                  //           builder: (context) =>
-                                  //               InputAuthorPage(
-                                  //                   categoryId: '',
-                                  //                   categoryName: '')));
-                                  // }
                                 ),
                                 IconButton(
                                     icon: Icon(Icons.home),
@@ -241,11 +227,6 @@ class TopPage extends ConsumerWidget {
                                 child: ListTile(
                                   title: Row(
                                     children: [
-                                      // CircleAvatar(
-                                      //   backgroundImage:
-                                      //       NetworkImage(value[index].picture.large),
-                                      //   radius: 24.0,
-                                      // ),
                                       SizedBox(width: 20.0),
                                       Expanded(
                                         child: Column(
@@ -287,13 +268,6 @@ class TopPage extends ConsumerWidget {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
-                                                  // 詳細表示
-                                                  // Text(
-                                                  //   title.toString(),
-                                                  //   style:
-                                                  //       TextStyle(fontSize: 17.0),
-                                                  //   overflow: TextOverflow.ellipsis,
-                                                  // ),
                                                   Text('$responseMessage'),
                                                   TextField(
                                                     controller:
@@ -310,17 +284,6 @@ class TopPage extends ConsumerWidget {
                                                             text,
                                                   ),
                                                   SizedBox(height: 10.0),
-                                                  // 詳細表示
-                                                  // Text(
-                                                  //   "リンク: " +
-                                                  //       value[index]
-                                                  //           .content
-                                                  //           .toString(),
-                                                  //   style: TextStyle(
-                                                  //       fontSize: 16.0,
-                                                  //       color: Colors.grey),
-                                                  //   overflow: TextOverflow.ellipsis,
-                                                  // ),
                                                   TextField(
                                                     controller:
                                                         TextEditingController(
@@ -335,18 +298,6 @@ class TopPage extends ConsumerWidget {
                                                         value[index].content =
                                                             text,
                                                   ),
-                                                  // 詳細表示
-                                                  // Text(
-                                                  //   "カテゴリー: " +
-                                                  //       value[index]
-                                                  //           .author
-                                                  //           .name
-                                                  //           .toString(),
-                                                  //   style: TextStyle(
-                                                  //       fontSize: 16.0,
-                                                  //       color: Colors.grey),
-                                                  //   overflow: TextOverflow.ellipsis,
-                                                  // ),
                                                   TextField(
                                                     controller:
                                                         TextEditingController(
@@ -445,45 +396,6 @@ class TopPage extends ConsumerWidget {
                                                             });
                                                             // Naviga
                                                           }),
-                                                      // ElevatedButton(
-                                                      //   child: const Text("update"),
-                                                      //   onPressed: () {
-                                                      //     if (value[index].title ==
-                                                      //         "") {
-                                                      //       context
-                                                      //           .read(
-                                                      //               responseMessageProvider)
-                                                      //           .state = "タイトルを入力してください。";
-                                                      //     }
-                                                      //     updateArticle(
-                                                      //             value[index].id,
-                                                      //             value[index].title,
-                                                      //             value[index].content,
-                                                      //             value[index]
-                                                      //                 .author
-                                                      //                 .id,
-                                                      //             value[index]
-                                                      //                 .author
-                                                      //                 .name)
-                                                      //         .then((value) {
-                                                      //       if (value == 200) {
-                                                      //         context
-                                                      //             .read(
-                                                      //                 responseMessageProvider)
-                                                      //             .state = "更新しました。";
-                                                      //       } else {
-                                                      //         context
-                                                      //             .read(
-                                                      //                 responseMessageProvider)
-                                                      //             .state = "更新に失敗しました。";
-                                                      //       }
-                                                      //       ;
-                                                      //       Navigator.of(context)
-                                                      //           .pop(true);
-                                                      //     });
-                                                      //     // Navigator.pop(context, true);
-                                                      //   },
-                                                      // ),
                                                       IconButton(
                                                           icon: Icon(
                                                               Icons.delete),
@@ -522,29 +434,6 @@ class TopPage extends ConsumerWidget {
                                                           }),
                                                     ],
                                                   ),
-                                                  // ElevatedButton(
-                                                  //   child: const Text("delete"),
-                                                  //   onPressed: () {
-                                                  //     deleteArticle(value[index].id)
-                                                  //         .then((value) {
-                                                  //       if (value == 200) {
-                                                  //         context
-                                                  //             .read(
-                                                  //                 responseMessageProvider)
-                                                  //             .state = "削除しました。";
-                                                  //       } else {
-                                                  //         context
-                                                  //             .read(
-                                                  //                 responseMessageProvider)
-                                                  //             .state = "削除に失敗しました。";
-                                                  //       }
-                                                  //       ;
-                                                  //       Navigator.of(context)
-                                                  //           .pop(true);
-                                                  //     });
-                                                  //     // Navigator.pop(context, true);
-                                                  //   },
-                                                  // ),
                                                 ],
                                               ),
                                             )

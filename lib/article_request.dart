@@ -34,7 +34,6 @@ Future<List<Article>> fetchArticles() async {
   dynamic accessToken = await FlutterSession().get("accessToken");
   final response = await _client.get(Uri.parse(rootPath + "/"),
       headers: {"accessToken": accessToken.toString()});
-  print(response);
   if (response.statusCode == 200) {
     return compute(parseArticles, response.body);
   } else {
@@ -81,8 +80,6 @@ Future<Article?> inputArticle(
   var author = new authorInputForm.AuthorInput(name: category);
   var request = new articleInputForm.ArticleInput(
       title: title, content: link, author: author);
-  print(request);
-  print(json.encode(request.toJson()));
   final response = await _client.post(Uri.parse(rootPath + "/article/input"),
       body: json.encode(request.toJson()),
       headers: {
@@ -93,7 +90,6 @@ Future<Article?> inputArticle(
     return compute(parseArticle, response.body);
   } else {
     return null;
-    // throw Exception('Can\'t input article');
   }
 }
 
@@ -106,8 +102,6 @@ Future<int?> updateArticle(int articleId, String title, String link,
   var author = new authorUpdateForm.AuthorUpdate(id: authorId, name: category);
   var request = new articleUpdateForm.ArticleUpdate(
       id: articleId, title: title, content: link, author: author);
-  print(request);
-  print(json.encode(request.toJson()));
   final response = await _client.post(Uri.parse(rootPath + "/article/update"),
       body: json.encode(request.toJson()),
       headers: {
@@ -118,7 +112,6 @@ Future<int?> updateArticle(int articleId, String title, String link,
     return response.statusCode;
   } else {
     return null;
-    // throw Exception('Can\'t update article');
   }
 }
 
@@ -128,8 +121,6 @@ Future<int?> deleteArticle(int articleId) async {
     (_client as BrowserClient).withCredentials = true;
   dynamic accessToken = await FlutterSession().get("accessToken");
   var request = new articleDeleteForm.ArticleDelete(id: articleId);
-  print(request);
-  print(json.encode(request.toJson()));
   final response = await _client.post(Uri.parse(rootPath + "/article/delete"),
       body: json.encode(request.toJson()),
       headers: {
@@ -140,6 +131,5 @@ Future<int?> deleteArticle(int articleId) async {
     return response.statusCode;
   } else {
     return null;
-    // throw Exception('Can\'t delete article');
   }
 }
