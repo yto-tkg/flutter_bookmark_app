@@ -115,25 +115,6 @@ class _InputAuthorPageState extends State<InputAuthorPage> {
                     });
                     Navigator.of(context).pop(true);
                   }),
-              // ElevatedButton(
-              //   child: const Text("save"),
-              //   onPressed: () {
-              //     if (categoryName == "" || categoryName == null) {
-              //       setState(() {
-              //         _isError = true;
-              //       });
-              //       return;
-              //     }
-              //     setState(() {
-              //       if (categoryId == null || categoryId == '') {
-              //         inputAuthor(categoryName!);
-              //       } else {
-              //         updateAuthor(int.parse(categoryId!), categoryName!);
-              //       }
-              //     });
-              //     Navigator.of(context).pop(true);
-              //   },
-              // ),
               if (_isError)
                 const Text(
                   "カテゴリー名を入力してください。",

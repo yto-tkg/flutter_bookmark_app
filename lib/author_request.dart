@@ -39,29 +39,12 @@ Future<List<Author>> fetchAuthors() async {
   }
 }
 
-// 検索
-// Future<List<Article>> searchAuthor(String content) async {
-//   if (_client is BrowserClient)
-//     (_client as BrowserClient).withCredentials = true;
-//   dynamic accessToken = await FlutterSession().get("accessToken");
-//   final response = await _client.get(
-//       Uri.parse(rootPath + "/article/search?content=" + content),
-//       headers: {"accessToken": accessToken.toString()});
-//   if (response.statusCode == 200) {
-//     return compute(parseArticles, response.body);
-//   } else {
-//     throw Exception('Can\'t search article');
-//   }
-// }
-
 // 新規登録
 Future<Author> inputAuthor(String name) async {
   if (_client is BrowserClient)
     (_client as BrowserClient).withCredentials = true;
   dynamic accessToken = await FlutterSession().get("accessToken");
   var request = new authorInputForm.AuthorInput(name: name);
-  print(request);
-  print(json.encode(request.toJson()));
   final response = await _client.post(Uri.parse(rootPath + "/author/input"),
       body: json.encode(request.toJson()),
       headers: {
@@ -71,7 +54,6 @@ Future<Author> inputAuthor(String name) async {
   if (response.statusCode == 200) {
     return compute(parseAuthor, response.body);
   } else {
-    // return null;
     throw Exception('Can\'t input author');
   }
 }
@@ -82,8 +64,6 @@ Future<int?> updateAuthor(int authorId, String name) async {
     (_client as BrowserClient).withCredentials = true;
   dynamic accessToken = await FlutterSession().get("accessToken");
   var request = new authorUpdateForm.AuthorUpdate(id: authorId, name: name);
-  print(request);
-  print(json.encode(request.toJson()));
   final response = await _client.post(Uri.parse(rootPath + "/author/update"),
       body: json.encode(request.toJson()),
       headers: {
@@ -94,7 +74,6 @@ Future<int?> updateAuthor(int authorId, String name) async {
     return response.statusCode;
   } else {
     return null;
-    // throw Exception('Can\'t update author');
   }
 }
 
@@ -104,8 +83,6 @@ Future<int?> deleteAuthor(int authorId) async {
     (_client as BrowserClient).withCredentials = true;
   dynamic accessToken = await FlutterSession().get("accessToken");
   var request = new authorDeleteForm.AuthorDelete(id: authorId);
-  print(request);
-  print(json.encode(request.toJson()));
   final response = await _client.post(Uri.parse(rootPath + "/author/delete"),
       body: json.encode(request.toJson()),
       headers: {
@@ -116,6 +93,5 @@ Future<int?> deleteAuthor(int authorId) async {
     return response.statusCode;
   } else {
     return null;
-    // throw Exception('Can\'t delete author');
   }
 }
