@@ -22,6 +22,6 @@
   削除  
   
 # 技術スタック
-  flutter
+  flutter  
   dart
   
