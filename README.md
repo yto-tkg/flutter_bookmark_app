@@ -1,16 +1,27 @@
-# flutter_bookmark_app
+# 概要
+ ブックマーク管理アプリ  
+ goで作成したAPIを叩いて表示
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# 機能一覧
+## 認証
+  会員登録  
+  ログイン  
+## ブックマーク
+  新規登録  
+  一覧  
+  検索  
+  詳細  
+  更新  
+  削除  
+## カテゴリ
+  新規登録  
+  一覧  
+  検索  
+  詳細  
+  更新  
+  削除  
+  
+# 技術スタック
+  flutter
+  dart
+  
