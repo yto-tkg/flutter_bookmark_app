@@ -1,6 +1,7 @@
 # 概要
  ブックマーク管理アプリ  
- go製のAPIサーバを叩いて表示
+ 下記go製のAPIサーバを叩いて表示する想定
+ https://github.com/yto-takagi/go_clean_arch_test
 
 # 機能一覧
 ## 認証
